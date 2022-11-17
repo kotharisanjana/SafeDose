@@ -31,6 +31,7 @@
 }
 
 .dashboard-chart {
+    padding: 5px;
     border-width: 0.5px;
     border-color: lightgrey;
     border-style: solid;
