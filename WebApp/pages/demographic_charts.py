@@ -134,14 +134,14 @@ def update_figure(selected_label):
 def generate_episode_demographic_stacked_bar():
     demographic_dropdown_labels = list(demographic_column_map.keys())
     episode_dropdown_labels = list(episode_column_map.keys())
-    demographic_dropdown = dbc.Row([
-        dbc.Col(html.Label('Demographic group')),
-        dbc.Col(dcc.Dropdown(demographic_dropdown_labels, demographic_dropdown_labels[0], id='demographic-bar-dropdown', clearable=False))
-    ], justify="start", className="g-0")
-    episode_dropdown = dbc.Row([
-        dbc.Col(html.Label('Type of episode')),
-        dbc.Col(dcc.Dropdown(episode_dropdown_labels, episode_dropdown_labels[0], id='episode-bar-dropdown', clearable=False, optionHeight=50))
-    ], justify="start", className="g-0")
+    demographic_dropdown = dbc.Col([
+        html.Label('Demographic group'),
+        dcc.Dropdown(demographic_dropdown_labels, demographic_dropdown_labels[0], id='demographic-bar-dropdown', clearable=False)
+    ])
+    episode_dropdown = dbc.Col([
+        html.Label('Type of episode'),
+        dcc.Dropdown(episode_dropdown_labels, episode_dropdown_labels[0], id='episode-bar-dropdown', clearable=False, optionHeight=50)
+    ])
     return html.Div(children=[
         dbc.Row([
             dbc.Col(demographic_dropdown),
