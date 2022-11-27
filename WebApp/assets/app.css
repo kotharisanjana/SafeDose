@@ -36,3 +36,20 @@
     border-color: lightgrey;
     border-style: solid;
 }
+
+.predict-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.abuse-form {
+    width: 75%;
+    justify-content: center;
+}
+
+.input-row {
+    padding: 10px 5px 10px 5px;
+    margin: 30px 5px 30px 5px; 
+    background: lightgrey;
+    justify-items: center;
+}
