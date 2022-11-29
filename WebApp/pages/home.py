@@ -36,8 +36,17 @@ predict_card = html.Div(children=[
     ])
 ], className="card-box")
 
+information_card = html.Div(children=[
+    dbc.Card([
+        dbc.CardImg(src='/assets/bias-pic.jpg'),
+        dbc.CardBody([
+            dbc.CardLink('Solving subjectivity', href=dash.page_registry['pages.bias']['path'])
+        ], className="card-link")
+    ])
+], className="card-box")
+
 card_row = html.Div(children=[
-    dashboard_card, predict_card
+    dashboard_card, predict_card, information_card
 ], className="d-flex justify-content-center")
 
 

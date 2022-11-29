@@ -37,12 +37,14 @@
     border-style: solid;
 }
 
+.casetype-content-section,
 .predict-page {
     display: flex;
     flex-direction: column;
     margin: 5px 5px 20px 5px;
 }
 
+.casetype-content-section,
 .predict-content-section {
     width: 75%;
     justify-content: center;
@@ -50,6 +52,7 @@
     align-self: center;
 }
 
+.information-row,
 .input-row {
     padding: 10px 5px 10px 5px;
     margin: 30px 5px 30px 5px; 
