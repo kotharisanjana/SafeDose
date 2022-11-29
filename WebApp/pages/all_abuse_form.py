@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc, Input, Output
+from dash import html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 from . import all_maps
 from .generate_input import generate_input
@@ -36,28 +36,45 @@ all_inputs = html.Div(children=[
     ], className='input-row'),   
 ])
 
-
 def generate_all_abuse_prediction():
     form = dbc.Form(all_inputs, className="abuse-form")
     return html.Div(children=[
         form,
-        html.Div(id='all-abuse-output-class'),
-    ])
+        html.Div(
+            children=[dbc.Button("Generate Abuse Indicators", id="open-modal", n_clicks=0)],
+            className='generate-button'
+        ),
+        dbc.Modal(
+            [
+                dbc.ModalHeader(dbc.ModalTitle("Generated Indicators")),
+                dbc.ModalBody(id="modal-content", children=["Output Stuff"]),
+                dbc.ModalFooter(dbc.Button("Close", id="close-modal", className="ms-auto", n_clicks=0))
+            ], id="output-modal", is_open=False, backdrop="static", centered=True
+        )
+    ], className='predict-content-section')
+
+
 @dash.callback(
-    Output('all-abuse-output-class', 'children'), 
-    Input('METRO', 'value'), Input('AGECAT', 'value'), Input('SEX', 'value'), Input('RACE', 'value'),
-    Input('CASETYPE', 'value'), Input('PHARMA', 'value'), Input('CASEWGT', 'value'),
-    Input('DRUGID_1', 'value'), Input('ROUTE_1', 'value'), Input('TOXTEST_1', 'value'),
-    Input('DRUGID_2', 'value'), Input('ROUTE_2', 'value'), Input('TOXTEST_2', 'value'),
-    Input('DRUGID_3', 'value'), Input('ROUTE_3', 'value'), Input('TOXTEST_3', 'value'),   
+    [Output("output-modal", "is_open"), Output("modal-content", "children")],
+    [
+        Input("open-modal", "n_clicks"), Input("close-modal", "n_clicks"),
+        Input('METRO', 'value'), Input('AGECAT', 'value'), Input('SEX', 'value'), Input('RACE', 'value'),
+        Input('CASETYPE', 'value'), Input('PHARMA', 'value'), Input('CASEWGT', 'value'),
+        Input('DRUGID_1', 'value'), Input('ROUTE_1', 'value'), Input('TOXTEST_1', 'value'),
+        Input('DRUGID_2', 'value'), Input('ROUTE_2', 'value'), Input('TOXTEST_2', 'value'),
+        Input('DRUGID_3', 'value'), Input('ROUTE_3', 'value'), Input('TOXTEST_3', 'value'),
+    ],
+    [State("output-modal", "is_open")]
 )
-def update_output_div(
+def toggle_modal(
+    open_clicks, close_clicks, 
     metro, age, sex, race, casetype, pharma, caseweight,
-    drug1, route1, tox1, drug2, route2, tox2, drug3, route3, tox3,
+    drug1, route1, tox1, drug2, route2, tox2, drug3, route3, tox3, 
+    is_open
 ):
     def get_key_for_value(map, val):
         return [key for key, value in map.items() if value==val][0]
-    
+
     metro_value = get_key_for_value(all_maps.METRO_map, metro)
     age_value = get_key_for_value(all_maps.AGECAT_map, age)
     sex_value = get_key_for_value(all_maps.SEX_map, sex)
@@ -105,4 +122,6 @@ def update_output_div(
         ].reset_index()
         df_test = pd.concat([df_test, drug_row], axis=1)
 
-    return f'Entered values are: {df_test.loc[0, :].to_dict()}'
+    if open_clicks or close_clicks:
+        return not is_open, [f'Entered values are: {df_test.loc[0, :].to_dict()}']
+    return is_open, [f'Entered values are: {df_test.loc[0, :].to_dict()}']

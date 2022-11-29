@@ -7,4 +7,4 @@ dash.register_page(__name__, path="/predict")
 
 layout = html.Div(children=[
      generate_all_abuse_prediction()   
-], className='predict-container')
+], className='predict-page')

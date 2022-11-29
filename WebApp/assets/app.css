@@ -37,19 +37,27 @@
     border-style: solid;
 }
 
-.predict-container {
+.predict-page {
     display: flex;
     flex-direction: column;
+    margin: 5px 5px 20px 5px;
 }
 
-.abuse-form {
+.predict-content-section {
     width: 75%;
     justify-content: center;
+    align-items: center;
+    align-self: center;
 }
 
 .input-row {
     padding: 10px 5px 10px 5px;
     margin: 30px 5px 30px 5px; 
     background: lightgrey;
-    justify-items: center;
+    border-radius: 10px;
+}
+
+.generate-button {
+    display: flex;
+    justify-content: center;
 }
