@@ -10,16 +10,16 @@ dash.register_page(__name__, path="/dashboard")
 tab1 = html.Div(children=[
     dbc.Row([
         dbc.Col(generate_disposition_bubble(), width=5, className="dashboard-chart"),
-        dbc.Col(generate_casetype_sunburst(), width=4, className="dashboard-chart")
+        dbc.Col(generate_casetype_sunburst(), width=5, className="dashboard-chart")
     ], justify='around', className="dashboard-row"),
     dbc.Row([
-        dbc.Col(generate_episode_demographic_stacked_bar(), width=5, className="dashboard-chart"),
+        dbc.Col(generate_episode_demographic_stacked_bar(), width=6, className="dashboard-chart"),
     ], justify='around', className="dashboard-row")
 ])
 
 tab2 = html.Div(children=[
     dbc.Row([
-        dbc.Col(generate_drug4_sunburst(), width=4, className="dashboard-chart"),
+        dbc.Col(generate_drug4_sunburst(), width=5, className="dashboard-chart"),
         dbc.Col(generate_route_demographic_horizontal_bar(), width=5, className="dashboard-chart")
     ], justify='around', className="dashboard-row"),
 ])

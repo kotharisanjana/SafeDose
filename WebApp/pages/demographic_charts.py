@@ -88,9 +88,16 @@ def update_figure(selected_label):
         size="Count", 
         size_max=60,
         title=f"Bubble chart of Disposition of a case across {selected_label} groups",
-        width=750, 
+        width=500, 
         height=500,
         labels={selected_column:selected_label, "DISPOSITION":"Disposition"}
+    )
+    fig.update_layout(
+        font=dict(
+            family="PT Sans Narrow",
+            size=11,
+            color="RebeccaPurple"
+        )
     )
 
     return fig
@@ -123,8 +130,15 @@ def update_figure(selected_label):
         path=[selected_column, "CASETYPE"],
         values='Count',
         title=f"Top three types of cases (by frequency) under each {selected_label} group",
-        width=600, 
+        width=500, 
         height=500
+    )
+    fig.update_layout(
+        font=dict(
+            family="PT Sans Narrow",
+            size=11,
+            color="RebeccaPurple"
+        )
     )
 
     return fig
@@ -172,9 +186,17 @@ def update_figure(demographic_label, episode_label):
         y='Count',
         color=episode_column,
         title=f"Number of cases in each demographic group stacked by type of episode",
-        width=700, 
+        width=550, 
         height=500,
         labels={demographic_column:demographic_label, "Count":"Number of cases"}
+    )
+
+    fig.update_layout(
+        font=dict(
+            family="PT Sans Narrow",
+            size=11,
+            color="RebeccaPurple"
+        )
     )
 
     return fig

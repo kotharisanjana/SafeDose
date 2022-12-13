@@ -3,6 +3,7 @@ from dash import html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 from . import all_maps
 from .generate_input import generate_input
+from .pipeline import pipeline
 import pandas as pd
 
 df_cat_sdled_mapping = pd.read_csv('assets/cat_sdled_mapping.csv')
@@ -116,12 +117,17 @@ def toggle_modal(
     }
 
     df_test = pd.DataFrame.from_dict(data_to_add)
-    for drug in [drug1_value, drug2_value, drug3_value]:
+    for index, drug in enumerate([drug1_value, drug2_value, drug3_value]):
         drug_row = df_cat_sdled_mapping[
             df_cat_sdled_mapping.eq(drug).any(axis=1)
-        ].reset_index()
+        ].reset_index().drop(columns=['index', 'DRUGID'])
+
+        drug_row.columns = [f'{c}_{index+1}' for c in drug_row.columns]
+
         df_test = pd.concat([df_test, drug_row], axis=1)
 
+    result_dict = pipeline(df_test)
+
     if open_clicks or close_clicks:
-        return not is_open, [f'Entered values are: {df_test.loc[0, :].to_dict()}']
-    return is_open, [f'Entered values are: {df_test.loc[0, :].to_dict()}']
+        return not is_open, [f'Entered values are: {result_dict}']
+    return is_open, [f'Entered values are: {result_dict}']

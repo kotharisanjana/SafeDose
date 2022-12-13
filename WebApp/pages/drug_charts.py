@@ -58,8 +58,15 @@ def update_figure(selected_label):
         path=['Drug', selected_column],
         values='Count',
         title=f"Division of {selected_label} groups for the top 4 drugs",
-        width=600, 
+        width=500, 
         height=500
+    )
+    fig.update_layout(
+        font=dict(
+            family="PT Sans Narrow",
+            size=11,
+            color="RebeccaPurple"
+        )
     )
 
     return fig
@@ -92,10 +99,17 @@ def update_figure(selected_label):
         color='Route',
         orientation='h',
         barmode='group',
-        title=f"Number of cases in each drug administration type grouped by demographic groups",
-        width=750, 
-        height=600,
+        title=f"Number of cases in each drug administration type\n grouped by demographic groups",
+        width=500, 
+        height=500,
         labels={"Count":"Number of cases", selected_column: selected_label}
+    )
+    fig.update_layout(
+        font=dict(
+            family="PT Sans Narrow",
+            size=11,
+            color="RebeccaPurple"
+        )
     )
 
     return fig
