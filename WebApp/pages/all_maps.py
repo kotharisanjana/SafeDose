@@ -29,8 +29,8 @@ ALL_ABUSE_INPUT_ROW_1 = {
 
 ALL_ABUSE_INPUT_ROW_2 = {
     'CASETYPE': {'label': 'Type of case', 'map': CASETYPE_map}, 
-    'PHARMA': {'label': 'Episode involves pharmaceuticals', 'map': PHARMA_map},
-    'CASEWGT': {'label': 'Total weight of drugs involved'} 
+    # 'PHARMA': {'label': 'Episode involves pharmaceuticals', 'map': PHARMA_map},
+    # 'CASEWGT': {'label': 'Total weight of drugs involved'} 
 }
 
 ALL_ABUSE_INPUT_ROW_3 = {

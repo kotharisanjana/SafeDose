@@ -8,6 +8,14 @@ import pandas as pd
 
 df_cat_sdled_mapping = pd.read_csv('assets/cat_sdled_mapping.csv')
 
+output_map = {
+    'ALCOHOL': 'Alchohol',
+    'NONALCILL': 'Illicit drugs (excluding alcohol)',
+    'PHARMA': 'Pharmaceutical drugs',
+    'NONMEDPHARMA': 'Pharmaceutical drugs used non-medically',
+    'ALLABUSE': 'All misuse and abuse'
+}
+
 row1_inputs = [generate_input(column=column, input_row=1) for column in list(all_maps.ALL_ABUSE_INPUT_ROW_1.keys())]
 row2_inputs = [generate_input(column=column, input_row=2) for column in list(all_maps.ALL_ABUSE_INPUT_ROW_2.keys())]
 row3_inputs = [generate_input(column=column, input_row=3) for column in list(all_maps.ALL_ABUSE_INPUT_ROW_3.keys())]
@@ -60,7 +68,7 @@ def generate_all_abuse_prediction():
     [
         Input("open-modal", "n_clicks"), Input("close-modal", "n_clicks"),
         Input('METRO', 'value'), Input('AGECAT', 'value'), Input('SEX', 'value'), Input('RACE', 'value'),
-        Input('CASETYPE', 'value'), Input('PHARMA', 'value'), Input('CASEWGT', 'value'),
+        Input('CASETYPE', 'value'),
         Input('DRUGID_1', 'value'), Input('ROUTE_1', 'value'), Input('TOXTEST_1', 'value'),
         Input('DRUGID_2', 'value'), Input('ROUTE_2', 'value'), Input('TOXTEST_2', 'value'),
         Input('DRUGID_3', 'value'), Input('ROUTE_3', 'value'), Input('TOXTEST_3', 'value'),
@@ -69,7 +77,7 @@ def generate_all_abuse_prediction():
 )
 def toggle_modal(
     open_clicks, close_clicks, 
-    metro, age, sex, race, casetype, pharma, caseweight,
+    metro, age, sex, race, casetype,
     drug1, route1, tox1, drug2, route2, tox2, drug3, route3, tox3, 
     is_open
 ):
@@ -82,8 +90,6 @@ def toggle_modal(
     race_value = get_key_for_value(all_maps.RACE_map, race)
 
     casetype_value = get_key_for_value(all_maps.CASETYPE_map, casetype)
-    pharma_value = get_key_for_value(all_maps.PHARMA_map, pharma)
-    caseweight_value = caseweight
 
     drug1_value = get_key_for_value(all_maps.DRUGID_1_map, drug1)
     route1_value = get_key_for_value(all_maps.ROUTE_map, route1)
@@ -108,8 +114,6 @@ def toggle_modal(
         'ROUTE_3': [route3_value],
         'TOXTEST_3': [tox3_value],
         'CASETYPE': [casetype_value],
-        'PHARMA': [pharma_value],
-        'CASEWGT': [caseweight_value],
         'METRO': [metro_value],
         'AGECAT': [age_value],
         'SEX': [sex_value],
@@ -120,7 +124,7 @@ def toggle_modal(
     for index, drug in enumerate([drug1_value, drug2_value, drug3_value]):
         drug_row = df_cat_sdled_mapping[
             df_cat_sdled_mapping.eq(drug).any(axis=1)
-        ].reset_index().drop(columns=['index', 'DRUGID'])
+        ].reset_index().drop(columns=['index', 'Unnamed: 0', 'DRUGID'])
 
         drug_row.columns = [f'{c}_{index+1}' for c in drug_row.columns]
 
@@ -128,6 +132,35 @@ def toggle_modal(
 
     result_dict = pipeline(df_test)
 
+    yes_abuse = [k for k,v in result_dict.items() if v==1]
+    no_abuse = [k for k,v in result_dict.items() if v==0]
+
+    yes_abuse_mapped = list(map(output_map.get, yes_abuse))
+    no_abuse_mapped = list(map(output_map.get, no_abuse))
+
+    yes_abuse_item_list = []
+    no_abuse_item_list = []
+
+    for abuse in yes_abuse_mapped:
+        yes_abuse_item_list.append(html.Li(f'{abuse}'))
+    for abuse in no_abuse_mapped:
+        no_abuse_item_list.append(html.Li(f'{abuse}'))
+
+    output_modal_content = html.Div(children=[
+            html.H4('Catgories of substances abused:'),
+            html.Ul(
+                yes_abuse_item_list           
+            ),
+            html.H4('Catgories of substances NOT abused:'),
+            html.Ul(
+                no_abuse_item_list           
+            )
+    ])
+
     if open_clicks or close_clicks:
-        return not is_open, [f'Entered values are: {result_dict}']
-    return is_open, [f'Entered values are: {result_dict}']
+        return not is_open, [
+           output_modal_content
+        ]
+    return is_open, [
+        output_modal_content
+        ]

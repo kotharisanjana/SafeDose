@@ -6,23 +6,14 @@ import pandas as pd
 
 dash.register_page(__name__, path="/bias")
 
-dataframe_demographic = pd.read_csv('assets/demographic_data.csv')
-CASETYPE_map = {0: 'NA', 1:'Suicide Attempt', 2:'Seeking Detox',3:'Alcohol Only(Age<21)', 4:'Adverse Reaction', 5:'Overmedication', 6:'Malicious Poisoning', 7:'Accidental Injestion', 8:'Other'}
-count_after_classification = {'Seeking Detox':42144, 'Adverse Reaction':6563, 'Suicide Attempt':13380, 'Overmedication':6730, 'Malicious Poisoning': 12038, 'Alcohol Only(Age<21)':0, 'Accidental Injestion': 2793, 'Other':-83648}
+data = {'Before_classification': [14841, 88096, 9033, 18146, 793, 7421, 3253, 87628], 'After_classification_count': [42144, 6563, 13380, 6730, 12038, 0, 2793, -87628]}
+casetype = ['Seeking Detox', 'Adverse Reaction', 'Suicide Attempt', 'Overmedication', 'Malicious Poisoning', 'Alcohol Only(Age<21)', 'Accidental Injestion', 'Other']
 
 def make_casetype_bar():
-    df_casetype_count_before = dataframe_demographic.groupby('CASETYPE').agg(
-        Before_Classification=pd.NamedAgg(column='CASETYPE', aggfunc="count")
-    )
-    casetype_index = df_casetype_count_before.index.map(CASETYPE_map)
-    df_casetype_count_before_mapped = df_casetype_count_before.set_index(casetype_index)
-
-    df_casetype_count_after = pd.Series(data=count_after_classification, name='Count_After')   
-    
-    df_casetype_count = pd.concat([df_casetype_count_before_mapped, df_casetype_count_after], axis=1)
-    df_casetype_count['After_Classification'] = df_casetype_count\
-        .apply(lambda x: x['Before_Classification']+x['Count_After'], axis=1)
-    df_final = df_casetype_count[['Before_Classification', 'After_Classification']]\
+    df_casetype = pd.DataFrame(data=data, index=casetype)
+    df_casetype['After_classification'] = df_casetype\
+        .apply(lambda x: x['Before_classification']+x['After_classification_count'], axis=1)
+    df_final = df_casetype[['Before_classification', 'After_classification']]\
         .unstack()\
         .reset_index()\
         .rename(columns={'level_0':'Classification', 'level_1':'Casetype', 0: 'Count'})
@@ -78,17 +69,27 @@ solution_row = html.Div(children=[
         the already labeled cases and annotates the 'Other' cases into one of the seven")
 ], className="information-row")
 
-visuaization_row = html.Div(children=[
+visuaization_row = html.Div(children=[html.Div(children=[
+    html.Div(
+        html.Img(
+            src='/assets/confusion_matrix.png',
+            className="class-report-image"
+        )
+    ),
+    html.Div(
+        html.Img(
+            src='/assets/casetype_classification_report.jpeg',
+            className="class-report-image"
+        )
+    )
+    ], className='visualization-row'),
+    html.Div(children=[
         html.Div(
             dcc.Graph(id='bias-casetype-count', figure=make_casetype_bar())
         ),
-        html.Div(
-            html.Img(
-                src='/assets/casetype_classification_report.jpg',
-                className="class-report-image"
-            )
-        )
     ], className='visualization-row')
+        
+])
 
 layout = html.Div(children=[
     why_row,
