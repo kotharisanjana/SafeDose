@@ -21,3 +21,5 @@ To run this app: <br>
 
 #### Shared drive link for datasets and pickle files
 https://drive.google.com/drive/folders/1b7Pyek5OqqVaqhVlDhs5gMWjzU5rqZFs?usp=sharing
+
+Project Artifacts - Presentation, Demo video and Porject Report can be found in the Info folder.
