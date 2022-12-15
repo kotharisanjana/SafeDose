@@ -99,7 +99,7 @@ def update_figure(selected_label):
         color='Route',
         orientation='h',
         barmode='group',
-        title=f"Number of cases in each drug administration type\n grouped by demographic groups",
+        title=f"Number of cases under each type of 'administration route'",
         width=500, 
         height=500,
         labels={"Count":"Number of cases", selected_column: selected_label}

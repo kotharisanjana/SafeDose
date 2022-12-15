@@ -6,7 +6,7 @@ dash.register_page(__name__, path="/")
 
 home_title = html.Div(
     children=[
-        html.H3(children="This will be the project catchphrase")
+        html.H3(children="SAFEDOSE")
 ])
 home_cloud = html.Img(
     src='/assets/drug_cloud.png',
@@ -40,7 +40,7 @@ information_card = html.Div(children=[
     dbc.Card([
         dbc.CardImg(src='/assets/bias-pic.jpg'),
         dbc.CardBody([
-            dbc.CardLink('Solving subjectivity', href=dash.page_registry['pages.bias']['path'])
+            dbc.CardLink('Addressing subjectivity', href=dash.page_registry['pages.bias']['path'])
         ], className="card-link")
     ])
 ], className="card-box")
