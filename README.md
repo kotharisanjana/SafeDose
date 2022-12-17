@@ -7,7 +7,7 @@ The solution is developed in accordance with the CRISP-DM methodology and the fi
 
 Dataset - https://www.datafiles.samhsa.gov/dataset/drug-abuse-warning-network-2011-dawn-2011-ds0001
 
-
+---
 
 #### Client-side application for SafeDose
 It is a Dash application. Dash is a framework that is built on top of plotly.js, react.js, and flask in Python.
@@ -20,6 +20,9 @@ To run this app: <br>
 
 
 #### Shared drive link for datasets and pickle files
-https://drive.google.com/drive/folders/1b7Pyek5OqqVaqhVlDhs5gMWjzU5rqZFs?usp=sharing
+https://drive.google.com/drive/u/1/folders/0AMxHcDG7ASBLUk9PVA
 
-Project Artifacts - Presentation, Demo video and Porject Report can be found in the Info folder.
+#### Project demo link
+https://youtu.be/NohvYeyC6t8
+
+Project Artifacts - Presentation, Demo video and Project Report can be found in the Info folder.
